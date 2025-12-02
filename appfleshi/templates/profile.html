@@ -6,6 +6,7 @@
 
 {% block body %}
     <body>
+        {% include "navbar.html" %}
         <h1>Perfil do usuário: {{ user.username }}</h1>
 
         {% if form %}
@@ -17,10 +18,10 @@
             </form>
         {% endif %}
 
-        <a href="{{ url_for('homepage') }}">Sair</a>
-
         {% for photo in user.photos %}
-            <img src="{{ url_for('static', filename='posts_photos/' ~ photo.filename) }}" alt="Imagem">
+            <a href="{{ url_for('profile', user_id=photo.user_id) }}">
+                <img src="{{ url_for('static', filename='posts_photos/' ~ photo.filename) }}" alt="Imagem">
+            </a>
         {% endfor %}
     </body>
 {% endblock %}
