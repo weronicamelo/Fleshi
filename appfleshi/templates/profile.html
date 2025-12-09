@@ -25,7 +25,8 @@
         {% endfor %}
 
         {% for photo in user.photos %}
-            <a href="{{ url_for('deletephoto', photo_id=photo.id) }}">
+            <a href="{{ url_for('deletephoto', photo_id=photo.id) }}"
+               onclick="return confirm('Tem certeza que deseja excluir esta foto?');">
                 <img src="{{ url_for('static', filename='site_photos/delete.png') }}" width="25">
             </a>
         {% endfor %}
