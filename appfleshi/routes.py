@@ -1,8 +1,8 @@
-from flask import render_template, url_for, redirect, session
+from flask import render_template, url_for, redirect, session, request
 from flask_login import login_required, login_user, logout_user, current_user
 from appfleshi.form import LoginForm, RegisterForm, PhotoForm
 from appfleshi import app, database, bcrypt
-from appfleshi.models import User, Photo
+from appfleshi.models import User, Photo, Comment
 import os
 from werkzeug.utils import secure_filename
 
@@ -67,4 +67,35 @@ def deletephoto(photo_id):
         database.session.delete(photo)
         database.session.commit()
     return redirect(url_for('profile', user_id=photo.user_id))
+
+from flask import request
+
+@app.route("/comment/<photo_id>", methods=["POST"])
+@login_required
+def comment(photo_id):
+    text = request.form.get("comment")
+
+    if text and text.strip():
+        new_comment = Comment(
+            text=text,
+            user_id=current_user.id,
+            photo_id=int(photo_id)
+        )
+        database.session.add(new_comment)
+        database.session.commit()
+
+    return redirect(request.referrer or url_for("feed"))
+
+@app.route("/delete_comment/<comment_id>")
+@login_required
+def delete_comment(comment_id):
+    comment = Comment.query.get(int(comment_id))
+
+    if comment and comment.user_id == current_user.id:
+        database.session.delete(comment)
+        database.session.commit()
+
+    return redirect(request.referrer or url_for("feed"))
+
+
 

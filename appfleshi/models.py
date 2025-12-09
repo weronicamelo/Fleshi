@@ -21,3 +21,18 @@ class Photo(database.Model):
     filename = database.Column(database.String(100), default="default.png")
     upload_date = database.Column(database.DateTime(timezone=True), nullable=False, default=lambda: datetime.now(timezone.utc))
     user_id = database.Column(database.Integer, database.ForeignKey("user.id"))
+
+class Comment(database.Model):
+    id = database.Column(database.Integer, primary_key=True)
+    text = database.Column(database.String(300), nullable=False)
+    timestamp = database.Column(
+        database.DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc)
+    )
+
+    user_id = database.Column(database.Integer, database.ForeignKey("user.id"), nullable=False)
+    photo_id = database.Column(database.Integer, database.ForeignKey("photo.id"), nullable=False)
+
+    user = database.relationship("User", backref="comments", lazy=True)
+    photo = database.relationship("Photo", backref="comments", lazy=True)
+

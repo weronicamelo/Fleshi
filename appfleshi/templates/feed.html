@@ -9,6 +9,32 @@
     <h1>Feed Principal</h1>
 
     {% for photo in photos %}
-        <img src="{{ url_for('static', filename='posts_photos/' ~ photo.filename) }}" alt="Imagem">
-    {% endfor %}
+    <img src="{{ url_for('static', filename='posts_photos/' ~ photo.filename) }}" alt="Imagem">
+
+    <div class="photo-block">
+
+        <img src="{{ url_for('static', filename='posts_photos/' ~ photo.filename) }}" width="350">
+
+        {% if photo.caption %}
+            <p><strong>{{ photo.user.username }}</strong>: {{ photo.caption }}</p>
+        {% endif %}
+        <hr>
+
+        {% for c in photo.comments %}
+        <div>
+            <strong>{{ c.user.username }}</strong>: {{ c.text }}
+
+            {% if c.user_id == current_user.id %}
+            <a href="{{ url_for('delete_comment', comment_id=c.id) }}" style="color:red; font-size:12px;">excluir</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <form action="{{ url_for('comment', photo_id=photo.id) }}" method="POST">
+            <input type="text" name="comment" placeholder="Escreva um comentário..." class="form-control">
+            <button class="btn btn-primary mt-1">Comentar</button>
+        </form>
+    </div>
+{% endfor %}
+
 {% endblock %}
