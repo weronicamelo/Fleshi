@@ -5,33 +5,73 @@
 {% endblock %}
 
 {% block form %}
-    <form method="post">
-    {{ form.csrf_token }}
-        {{ form.email.label() }}
-        {{ form.email() }}
 
-        {% if form.email.errors %}
-            {% for erro in form.email.errors %}
-                <p class="alert alert-danger">{{ erro }}</p>
-            {% endfor %}
-        {% endif %}
+<style>
+    body {
+        background: linear-gradient(135deg, #3f51b5, #8e24aa);
+        background-attachment: fixed;
+    }
 
-        {{ form.username.label() }}
-        {{ form.username() }}
+    .btn-blue-dark {
+        background-color: #0d47a1 !important;
+        color: white !important;
+        border: none !important;
+    }
 
-        {% if form.username.errors %}
-            {% for erro in form.username.errors %}
-                <p class="alert alert-danger">{{ erro }}</p>
-            {% endfor %}
-        {% endif %}
+    .btn-blue-dark:hover {
+        background-color: #08306b !important;
+        color: white !important;
+    }
+</style>
 
-        {{ form.password.label() }}
-        {{ form.password() }}
+<div class="d-flex justify-content-center">
+    <div class="border m-5 shadow-lg rounded-5 p-5 w-25 bg-white">
 
-        {{ form.confirm_password.label() }}
-        {{ form.confirm_password() }}
+        <h2 class="text-center mb-4" style="font-size: 25px;">Criar Conta</h2>
 
-        {{ form.submit () }}
-    </form>
-<a href="{{ url_for('homepage') }}">Tem uma conta? Faça login.</a>
+        <form method="post">
+            {{ form.csrf_token }}
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control", placeholder="Digite o seu e-mail") }}
+
+                {% if form.email.errors %}
+                    {% for erro in form.email.errors %}
+                        <p class="alert alert-danger py-1 mt-2">{{ erro }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.username.label(class="form-label") }}
+                {{ form.username(class="form-control", placeholder="Digite um usuário") }}
+
+                {% if form.username.errors %}
+                    {% for erro in form.username.errors %}
+                        <p class="alert alert-danger py-1 mt-2">{{ erro }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }}
+                {{ form.password(class="form-control", placeholder="Digite uma senha") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.confirm_password.label(class="form-label") }}
+                {{ form.confirm_password(class="form-control", placeholder="Digite novamente a senha") }}
+            </div>
+
+            <div class="d-flex justify-content-center mt-4">
+                {{ form.submit(class="btn btn-blue-dark px-4 py-2") }}
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <a href="{{ url_for('homepage') }}">Já tem conta? Faça login.</a>
+        </div>
+
+    </div>
+</div>
 {% endblock %}

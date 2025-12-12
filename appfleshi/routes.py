@@ -5,7 +5,6 @@ from appfleshi import app, database, bcrypt
 from appfleshi.models import User, Photo, Comment
 import os
 from werkzeug.utils import secure_filename
-
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
     login_form = LoginForm()
@@ -14,6 +13,8 @@ def homepage():
         if user and bcrypt.check_password_hash(user.password, login_form.password.data):
             login_user(user)
             return redirect(url_for('feed'))
+        else:
+            login_form.email.errors.append("E-mail ou senha incorretos")
     return render_template("homepage.html", form=login_form)
 
 @app.route('/createaccount', methods=['GET', 'POST'])
